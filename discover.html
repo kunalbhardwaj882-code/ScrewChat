@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discover – ScrewChat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e0e;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffc3;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: #1a1a1a;
+      border: 2px solid #00ffc3;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,255,224,0.1);
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .card button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+      background: #00ffc3;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .locked {
+      text-align: center;
+      color: #ff3c3c;
+      margin-top: 100px;
+    }
+  </style>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <h1>💎 Discover Women</h1>
+  <div id="content"></div>
+
+  <script>
+const firebaseConfig = {
+  // REPLACE WITH YOUR CONFIG
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const content = document.getElementById("content");
+
+auth.onAuthStateChanged(user => {
+  if (!user) return content.innerHTML = "<div class='locked'><h2>Login Required</h2></div>";
+  
+  db.collection("users").doc(user.uid).get().then(doc => {
+    const me = doc.data();
+    if (!me || !me.vip) {
+      content.innerHTML = '<div class="locked"><h2>🚫 VIP Access Required</h2><p>This section is only for VIP users.</p></div>';
+      return;
+    }
+
+    // Fetch all women profiles
+    db.collection("users").where("type", "==", "woman").get().then(snapshot => {
+      let html = '<div class="grid">';
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        html += `
+          <div class="card">
+            <h3>${d.name || "Unknown"}</h3>
+            <p>Age: ${d.age || "N/A"}</p>
+            <p>Country: ${d.country || "N/A"}</p>
+            <button onclick="alert('📞 Calling ${d.name}')">📞 Call</button>
+            <button onclick="alert('🤝 Friend request sent to ${d.name}')">🤝 Add Friend</button>
+          </div>
+        `;
+      });
+      html += '</div>';
+      content.innerHTML = html;
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to ScrewChat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1f71, #f35858);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+      text-align: center;
+      animation: fadeInUp 1s ease;
+    }
+    h1 {
+      font-size: 30px;
+      color: #00ffe5;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: 0.3s ease;
+    }
+    input {
+      background: #fff;
+      color: #333;
+    }
+    button {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.5);
+    }
+    button:hover {
+      transform: scale(1.03);
+    }
+    .links {
+      font-size: 14px;
+      margin-top: 15px;
+    }
+    .links a {
+      color: #00f7ff;
+      text-decoration: underline;
+      margin: 0 6px;
+    }
+    @keyframes fadeInUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>👋 Welcome to <span style="color:#fff;">ScrewChat</span></h1>
+    <input type="number" id="ageInput" placeholder="Enter your age (18–80)" min="18" max="80">
+    <button onclick="validateAge()">Continue</button>
+    <button onclick="signInWithGoogle()">Sign in with Google</button>
+    <div class="links">
+      <a href="privacy.html" target="_blank">Privacy</a> |
+      <a href="terms.html" target="_blank">Terms</a> |
+      <a href="guidelines.html" target="_blank">Guidelines</a>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDSG9gmkJsL7HhBrv2Eaa-OMsv-0bJALxs",
+      authDomain: "screwchat-randomvideochat.firebaseapp.com",
+      projectId: "screwchat-randomvideochat",
+      appId: "1:74477360618:web:688dc1f3256efcaf160e93"
+
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    let isAgeVerified = false;
+
+    function validateAge() {
+      const age = parseInt(document.getElementById('ageInput').value);
+      if (age >= 18 && age <= 80) {
+        alert("✅ Age verified");
+        isAgeVerified = true;
+      } else {
+        alert("❌ Must be 18–80 years only.");
+      }
+    }
+
+    function signInWithGoogle() {
+      if (!isAgeVerified) {
+        alert("Enter valid age first.");
+        return;
+      }
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(result => {
+          alert("✅ Welcome " + result.user.displayName);
+          window.location.href = "chat.html";
+        })
+        .catch(error => {
+          console.error(error);
+          alert("❌ Login failed.");
+        });
+    }
+  </script>
+</body>
+</html>

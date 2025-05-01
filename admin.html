@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ScrewChat Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #00ffc3;
+    }
+    .section {
+      background: rgba(255,255,255,0.05);
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 800px;
+      box-shadow: 0 0 20px rgba(0,255,224,0.2);
+    }
+    .section h2 {
+      border-bottom: 1px solid #00ffc3;
+      padding-bottom: 10px;
+    }
+    .profile-box, .withdraw-box {
+      border: 2px solid #00ffc3;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+    button {
+      background: #ff0055;
+      border: none;
+      padding: 8px 16px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>👑 ScrewChat Admin Panel</h1>
+
+  <div class="section">
+    <h2>👩 Women Profiles</h2>
+    <div id="profiles">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>💸 Withdraw Requests</h2>
+    <div class="withdraw-box">User: simran24 – Request: $50<br><button onclick="alert('Processed')">Mark as Done</button></div>
+    <div class="withdraw-box">User: ria1999 – Request: $70<br><button onclick="alert('Processed')">Mark as Done</button></div>
+  </div>
+
+  <div class="section">
+    <h2>🚨 User Reports</h2>
+    <div id="reportList">Loading reports...</div>
+  </div>
+
+  <script>
+    const access = prompt("Enter admin password:");
+    if (access !== "screwadmin") {
+      document.body.innerHTML = "<h1 style='color:red;text-align:center;'>Access Denied ❌</h1>";
+    } else {
+      const data = localStorage.getItem("womanProfile");
+      const coins = localStorage.getItem("coins") || "0";
+      const display = document.getElementById("profiles");
+      if (!data) {
+        display.innerHTML = "<i>No profile data found.</i>";
+      } else {
+        const p = JSON.parse(data);
+        display.innerHTML = `
+          <div class="profile-box">
+            <b>Name:</b> ${p.name || "N/A"}<br>
+            <b>Age:</b> ${p.age || "N/A"}<br>
+            <b>Country:</b> ${p.country || "N/A"}<br>
+            <b>Bio:</b> ${p.bio || "N/A"}<br>
+            <b>Coins Earned:</b> ${coins}<br>
+            <button onclick="alert('User Blocked')">🚫 Ban User</button>
+          </div>
+        `;
+      }
+
+      loadReports();
+    }
+
+    function loadReports() {
+      const data = JSON.parse(localStorage.getItem("reports") || "[]");
+      const list = document.getElementById("reportList");
+      if (!data.length) {
+        list.innerHTML = "<i>No reports found.</i>";
+        return;
+      }
+
+      list.innerHTML = data.map((r, i) => `
+        <div class="withdraw-box">
+          <b>Time:</b> ${r.time}<br>
+          <b>User:</b> ${r.name}<br>
+          <b>Reason:</b> ${r.reason}<br>
+          <button onclick="alert('User Blocked')">🚫 Ban</button>
+          <button onclick="removeReport(${i})">❌ Ignore</button>
+        </div>
+      `).join('');
+    }
+
+    function removeReport(index) {
+      let reports = JSON.parse(localStorage.getItem("reports") || "[]");
+      reports.splice(index, 1);
+      localStorage.setItem("reports", JSON.stringify(reports));
+      loadReports();
+    }
+  
+function loadWithdraws() {
+  const data = JSON.parse(localStorage.getItem("withdraws") || "[]");
+  const list = document.getElementById("withdrawList");
+  if (!data.length) {
+    list.innerHTML = "<i>No withdrawal requests found.</i>";
+    return;
+  }
+
+  list.innerHTML = data.map((r, i) => `
+    <div class="withdraw-box">
+      <b>Time:</b> ${r.time}<br>
+      <b>Amount:</b> $${r.amount}<br>
+      <b>Method:</b> ${r.method}<br>
+      <button onclick="removeWithdraw(${i})">✅ Mark Paid</button>
+    </div>
+  `).join('');
+}
+
+function removeWithdraw(index) {
+  let withdraws = JSON.parse(localStorage.getItem("withdraws") || "[]");
+  withdraws.splice(index, 1);
+  localStorage.setItem("withdraws", JSON.stringify(withdraws));
+  loadWithdraws();
+}
+
+if (typeof access === "undefined" || access === "screwadmin") {
+  loadWithdraws();
+}
+
+</script>
+</body>
+</html>

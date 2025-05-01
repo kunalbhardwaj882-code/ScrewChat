@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>ScrewChat – Live Chat</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    header {
+      background: #181818;
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .coin {
+      background: #00ffc3;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      box-shadow: 0 0 8px #00ffc3;
+    }
+
+    #vipTag {
+      color: #ffd700;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+
+    .main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 80px);
+      position: relative;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    .woman-video {
+      width: 100%;
+      border-radius: 16px;
+      border: 4px solid #00ffe0;
+      box-shadow: 0 0 30px #00ffe0;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .man-video-inside {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 200px;
+      border-radius: 10px;
+      border: 2px solid #ff3cc9;
+      box-shadow: 0 0 10px #ff3cc9;
+      z-index: 2;
+    }
+    .controls-inside {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      z-index: 5;
+    }
+
+    .controls-inside button {
+      padding: 10px 18px;
+      background: linear-gradient(135deg, #ff00cc, #3333ff);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 3px 10px rgba(255, 0, 128, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .controls-inside button:hover {
+      transform: scale(1.1);
+    }
+
+    .gift-panel {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .gift-panel button {
+      font-size: 22px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #00ffc3;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s;
+    }
+
+    .gift-panel button:hover {
+      transform: scale(1.2);
+    }
+
+    #giftFlash {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      color: #fff;
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .chat-panel {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 280px;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      background: rgba(0,0,0,0.6);
+      border-radius: 10px;
+      padding: 10px;
+      z-index: 9;
+      color: white;
+      backdrop-filter: blur(6px);
+    }
+
+    .message-box {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 250px;
+      padding-right: 5px;
+    }
+
+    .message-box div {
+      margin-bottom: 8px;
+      background: #222;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .message-input {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .message-input input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .message-input button {
+      background: #00ffc3;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+/* 📱 Mobile Responsive Tweaks */
+@media screen and (max-width: 600px) {
+  .main {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .video-wrapper {
+    width: 100%;
+  }
+
+  .man-video-inside {
+    width: 100px;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .controls-inside {
+    flex-direction: column;
+    gap: 10px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .chat-panel {
+    width: 100%;
+    max-width: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    bottom: 80px;
+  }
+
+  .gift-panel {
+    top: 10px;
+    right: 10px;
+    flex-wrap: wrap;
+    max-width: 180px;
+  }
+
+  .message-input {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .message-input input, .message-input button {
+    width: 100%;
+  }
+}
+
+  
+/* ✨ Loading Overlay */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+.loader {
+  border: 6px solid #333;
+  border-top: 6px solid #00ffc3;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+.overlay p {
+  margin-top: 15px;
+  font-size: 18px;
+  color: white;
+}
+
+/* 🎛️ Media Controls */
+.media-controls {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+.media-controls button {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid #00ffc3;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+<header>
+<div>🎥 ScrewChat Live <span id="vipTag"></span></div>
+<div class="coin">💰 Coins: <span id="coinCount">0</span></div>
+</header>
+<div class="main">
+<div class="video-wrapper" id="videoWrapper">
+<video autoplay="" class="woman-video" id="remoteVideo" playsinline=""></video>
+<video autoplay="" class="man-video-inside" id="myVideo" muted="" playsinline=""></video>
+<!-- Message Panel -->
+<div class="chat-panel">
+<div class="message-box" id="messages"></div>
+<div class="message-input">
+<input id="messageInput" placeholder="Type a message..." type="text"/>
+<button onclick="sendMessage()">Send</button>
+</div>
+</div>
+<!-- Controls -->
+<div class="controls-inside">
+<button onclick="startChat()">▶️ Start</button>
+<button onclick="skipChat()">⏭️ Skip</button>
+<button onclick="stopChat()">⏹️ Stop</button>
+<button onclick="goToShop()">🛒 Shop</button>
+<button onclick="reportUser()">🚨 Report</button>
+</div>
+<!-- Gifts -->
+<div class="gift-panel">
+<button onclick="sendGift('🌹 Rose', 20)">🌹</button>
+<button onclick="sendGift('❤️ Heart', 100)">❤️</button>
+<button onclick="sendGift('💎 Diamond', 500)">💎</button>
+<button onclick="sendGift('👑 Crown', 1500)">👑</button>
+</div>
+<div id="giftFlash"></div>
+</div>
+</div>
+<!-- ⏳ Loading Overlay -->
+<div class="overlay" id="loadingOverlay">
+<div class="loader"></div>
+<p>Connecting...</p>
+</div>
+<!-- 🎛️ Mute & Camera Buttons -->
+<div class="media-controls">
+<button id="micBtn" onclick="toggleMic()">🎙️ Mute</button>
+<button id="camBtn" onclick="toggleCam()">📷 Off</button>
+</div>
+
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js">
+let localStream;
+
+navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+  myVideo.srcObject = stream;
+  localStream = stream;
+  stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+});
+
+function toggleMic() {
+  const audioTrack = localStream.getAudioTracks()[0];
+  audioTrack.enabled = !audioTrack.enabled;
+  document.getElementById("micBtn").textContent = audioTrack.enabled ? "🎙️ Mute" : "🔇 Unmute";
+}
+
+function toggleCam() {
+  const videoTrack = localStream.getVideoTracks()[0];
+  videoTrack.enabled = !videoTrack.enabled;
+  document.getElementById("camBtn").textContent = videoTrack.enabled ? "📷 Off" : "📷 On";
+}
+
+const originalStartChat = startChat;
+startChat = function() {
+  if (coins < 20) {
+    alert("Not enough coins!");
+    return;
+  }
+  document.getElementById("loadingOverlay").style.display = "flex";
+  updateCoins(-20);
+  deductCoinsFromFirestore(20);
+  timer = setTimeout(() => {
+    if (coins >= 20) {
+      if (confirm("Continue for 20 more coins?")) {
+        updateCoins(-20);
+  deductCoinsFromFirestore(20);
+        startChat();
+      } else {
+        stopChat();
+      }
+    } else {
+      alert("Not enough coins to continue.");
+      stopChat();
+    }
+  }, 60000);
+  setTimeout(() => {
+    document.getElementById("loadingOverlay").style.display = "none";
+  }, 3000);
+}
+
+function saveMessageToHistory(sender, text) {
+  let history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+  history.push({ sender, text, time: new Date().toLocaleTimeString() });
+  if (history.length > 20) history = history.slice(-20);
+  localStorage.setItem("chatHistory", JSON.stringify(history));
+}
+
+// Load history on page load
+window.addEventListener("load", () => {
+  const history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+  history.forEach(msg => {
+    const bubble = document.createElement("div");
+    bubble.textContent = (msg.sender === "me" ? "🧑 " : "👤 ") + msg.text;
+    bubble.style.background = msg.sender === "me" ? "#222" : "#444";
+    document.getElementById("messages").appendChild(bubble);
+  });
+});
+
+
+// 🔥 Firestore message + coin system
+const db = firebase.firestore();
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+const myId = user.email || "unknown";
+let peerEmail = "unknown";
+
+// Save message to Firestore
+function saveMessageToFirestore(text, from) {
+  if (!myId || !peerEmail) return;
+  const sessionId = [myId, peerEmail].sort().join("_");
+  db.collection("messages").add({
+    text,
+    from,
+    session: sessionId,
+    time: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+// Deduct coins from Firestore
+function deductCoinsFromFirestore(amount) {
+  if (!user.email) return;
+  const ref = db.collection("users").doc(user.uid);
+  ref.get().then(doc => {
+    if (doc.exists) {
+      const current = doc.data().coins || 0;
+      ref.update({ coins: Math.max(0, current - amount) });
+    }
+  });
+}
+
+
+// 🔁 Load Firestore message history
+function loadFirestoreMessages() {
+  if (!myId || !peerEmail) return;
+  const sessionId = [myId, peerEmail].sort().join("_");
+
+  db.collection("messages")
+    .where("session", "==", sessionId)
+    .orderBy("time", "asc")
+    .limit(20)
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        const bubble = document.createElement("div");
+        bubble.textContent = (msg.from === myId ? "🧑 " : "👤 ") + msg.text;
+        bubble.style.background = msg.from === myId ? "#222" : "#444";
+        document.getElementById("messages").appendChild(bubble);
+      });
+    });
+}
+
+
+// 🔄 Load user coins + VIP from Firestore
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) return;
+  const uid = user.uid;
+  const ref = firebase.firestore().collection("users").doc(uid);
+  ref.get().then(doc => {
+    if (doc.exists) {
+      const data = doc.data();
+      document.getElementById("coinCount").textContent = data.coins || 0;
+      if (data.vip) {
+        document.getElementById("vipTag").textContent = "✅ (VIP)";
+      }
+    }
+  });
+});
+
+</script>
+<script>
+  let coins = parseInt(localStorage.getItem("coins") || "200");
+  let timer, peerId = null;
+  const coinEl = document.getElementById("coinCount");
+  coinEl.textContent = coins;
+
+  if (localStorage.getItem("vip") === "true") {
+    document.getElementById("vipTag").innerHTML = "✅ (VIP)";
+  }
+
+  const socket = io("http://localhost:3000");
+  const peerConnection = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+
+  const myVideo = document.getElementById("myVideo");
+  const remoteVideo = document.getElementById("remoteVideo");
+
+  navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+    myVideo.srcObject = stream;
+    stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+  });
+
+  peerConnection.ontrack = (event) => {
+    remoteVideo.srcObject = event.streams[0];
+  };
+
+  peerConnection.onicecandidate = (event) => {
+    if (event.candidate && peerId) {
+      socket.emit("signal", { to: peerId, data: { candidate: event.candidate } });
+    }
+  };
+
+  socket.on("peer", async ({ peerId: otherPeer }) => {
+    peerId = otherPeer;
+    const offer = await peerConnection.createOffer();
+    await peerConnection.setLocalDescription(offer);
+    socket.emit("signal", { to: peerId, data: { offer } });
+  });
+
+  socket.on("signal", async ({ from, data }) => {
+    peerId = from;
+peerEmail = "test@peer.com";
+loadFirestoreMessages();
+    if (data.offer) {
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+      socket.emit("signal", { to: from, data: { answer } });
+    }
+    if (data.answer) {
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+    }
+    if (data.candidate) {
+      try {
+        await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+      } catch (e) { console.error("ICE error", e); }
+    }
+  });
+
+  function startChat() {
+    if (coins < 20) {
+      alert("Not enough coins!");
+      return;
+    }
+    updateCoins(-20);
+  deductCoinsFromFirestore(20);
+    timer = setTimeout(() => {
+      if (coins >= 20) {
+        if (confirm("Continue for 20 more coins?")) {
+          updateCoins(-20);
+  deductCoinsFromFirestore(20);
+          startChat();
+        } else {
+          stopChat();
+        }
+      } else {
+        alert("Not enough coins to continue.");
+        stopChat();
+      }
+    }, 60000);
+  }
+
+  function stopChat() {
+    clearTimeout(timer);
+    alert("Chat stopped.");
+  }
+
+  function skipChat() {
+    location.reload();
+  }
+
+  function updateCoins(amount) {
+    coins += amount;
+    localStorage.setItem("coins", coins);
+    coinEl.textContent = coins;
+  }
+
+  function goToShop() {
+    window.location.href = "shop.html";
+  }
+
+  function sendGift(name, cost) {
+    if (coins < cost) {
+      alert("❌ Not enough coins for " + name);
+      return;
+    }
+    updateCoins(-cost);
+    const giftFlash = document.getElementById("giftFlash");
+    giftFlash.textContent = name;
+    giftFlash.style.opacity = 1;
+    setTimeout(() => { giftFlash.style.opacity = 0; }, 1000);
+    alert("🎁 Sent " + name + "!");
+  }
+
+  
+ // 🟢 Chat message function with Socket.io
+const msgBox = document.getElementById("messages");
+const msgInput = document.getElementById("messageInput");
+
+function sendMessage() {
+  const text = msgInput.value.trim();
+  if (!text) return;
+
+  // Show own message
+  const bubble = document.createElement("div");
+  bubble.textContent = "🧑 " + text;
+  msgBox.appendChild(bubble);
+  msgBox.scrollTop = msgBox.scrollHeight;
+  saveMessageToHistory("peer", text);
+  saveMessageToFirestore(text, peerEmail);
+  saveMessageToHistory("me", text);
+
+  // Emit message to peer
+  if (peerId) {
+    socket.emit("message", { to: peerId, text });
+  }
+
+  msgInput.value = "";
+}
+
+// Listen for incoming messages
+socket.on("message", ({ text }) => {
+  const bubble = document.createElement("div");
+  bubble.textContent = "👤 " + text;
+  bubble.style.background = "#444";
+  msgBox.appendChild(bubble);
+  msgBox.scrollTop = msgBox.scrollHeight;
+  saveMessageToHistory("me", text);
+  saveMessageToFirestore(text, myId);
+});
+function reportUser() {
+  const reason = prompt("Enter reason for report:");
+  if (!reason) return alert("Report cancelled.");
+  const reports = JSON.parse(localStorage.getItem("reports") || "[]");
+  const entry = {
+    name: "Unknown",
+    reason,
+    time: new Date().toLocaleString()
+  };
+  reports.push(entry);
+  localStorage.setItem("reports", JSON.stringify(reports));
+  alert("✅ Report submitted to admin.");
+}
+
+
+
+function saveMessageToHistory(sender, text) {
+  let history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+  history.push({ sender, text, time: new Date().toLocaleTimeString() });
+  if (history.length > 20) history = history.slice(-20);
+  localStorage.setItem("chatHistory", JSON.stringify(history));
+}
+
+// Load history on page load
+window.addEventListener("load", () => {
+  const history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+  history.forEach(msg => {
+    const bubble = document.createElement("div");
+    bubble.textContent = (msg.sender === "me" ? "🧑 " : "👤 ") + msg.text;
+    bubble.style.background = msg.sender === "me" ? "#222" : "#444";
+    document.getElementById("messages").appendChild(bubble);
+  });
+});
+
+
+// 🔥 Firestore message + coin system
+const db = firebase.firestore();
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+const myId = user.email || "unknown";
+let peerEmail = "unknown";
+
+// Save message to Firestore
+function saveMessageToFirestore(text, from) {
+  if (!myId || !peerEmail) return;
+  const sessionId = [myId, peerEmail].sort().join("_");
+  db.collection("messages").add({
+    text,
+    from,
+    session: sessionId,
+    time: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+// Deduct coins from Firestore
+function deductCoinsFromFirestore(amount) {
+  if (!user.email) return;
+  const ref = db.collection("users").doc(user.uid);
+  ref.get().then(doc => {
+    if (doc.exists) {
+      const current = doc.data().coins || 0;
+      ref.update({ coins: Math.max(0, current - amount) });
+    }
+  });
+}
+
+
+// 🔁 Load Firestore message history
+function loadFirestoreMessages() {
+  if (!myId || !peerEmail) return;
+  const sessionId = [myId, peerEmail].sort().join("_");
+
+  db.collection("messages")
+    .where("session", "==", sessionId)
+    .orderBy("time", "asc")
+    .limit(20)
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        const bubble = document.createElement("div");
+        bubble.textContent = (msg.from === myId ? "🧑 " : "👤 ") + msg.text;
+        bubble.style.background = msg.from === myId ? "#222" : "#444";
+        document.getElementById("messages").appendChild(bubble);
+      });
+    });
+}
+
+
+// 🔄 Load user coins + VIP from Firestore
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) return;
+  const uid = user.uid;
+  const ref = firebase.firestore().collection("users").doc(uid);
+  ref.get().then(doc => {
+    if (doc.exists) {
+      const data = doc.data();
+      document.getElementById("coinCount").textContent = data.coins || 0;
+      if (data.vip) {
+        document.getElementById("vipTag").textContent = "✅ (VIP)";
+      }
+    }
+  });
+});
+
+</script>
+</body>
+</html>

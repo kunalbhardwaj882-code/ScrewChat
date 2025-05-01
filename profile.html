@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ScrewChat – Stylish Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #0f0f0f, #1a0033);
+      color: white;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(to right, #00ffc3, #ff00cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.2em;
+    }
+    .container {
+      max-width: 850px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(0,255,224,0.2);
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #00ffc3;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      background: #1c1c1c;
+      color: white;
+      box-shadow: inset 0 0 8px rgba(0,255,224,0.2);
+    }
+    input[type="file"] {
+      background: transparent;
+      border: 2px dashed #00ffc3;
+      padding: 14px;
+      color: #00ffc3;
+      cursor: pointer;
+    }
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 15px;
+    }
+    .preview img, .preview video {
+      width: 140px;
+      border-radius: 10px;
+      border: 2px solid #00ffc3;
+      box-shadow: 0 0 10px #00ffc3;
+    }
+    .button-save {
+      margin-top: 30px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #ff00cc, #00ffc3);
+      border: none;
+      border-radius: 12px;
+      color: black;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0,255,224,0.3);
+    }
+    .coin-box {
+      margin-top: 20px;
+      background: #00ffc340;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #000;
+      box-shadow: 0 0 12px #00ffc3;
+    }
+  </style>
+</head>
+<body>
+  <h1>👩‍🎤 My Stylish Profile</h1>
+  <div class="container">
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Enter your name">
+
+    <label>Age</label>
+    <input type="number" id="age" min="18" max="80" placeholder="18–80">
+
+    <label>Country</label>
+    <select id="country">
+  <option value="">-- Select Country --</option>
+  <option value="Afghanistan">Afghanistan</option>
+  <option value="Albania">Albania</option>
+  <option value="Algeria">Algeria</option>
+  <option value="Andorra">Andorra</option>
+  <option value="Angola">Angola</option>
+  <option value="Argentina">Argentina</option>
+  <option value="Armenia">Armenia</option>
+  <option value="Australia">Australia</option>
+  <option value="Austria">Austria</option>
+  <option value="Azerbaijan">Azerbaijan</option>
+  <option value="Bahamas">Bahamas</option>
+  <option value="Bahrain">Bahrain</option>
+  <option value="Bangladesh">Bangladesh</option>
+  <option value="Barbados">Barbados</option>
+  <option value="Belarus">Belarus</option>
+  <option value="Belgium">Belgium</option>
+  <option value="Belize">Belize</option>
+  <option value="Benin">Benin</option>
+  <option value="Bhutan">Bhutan</option>
+  <option value="Bolivia">Bolivia</option>
+  <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+  <option value="Botswana">Botswana</option>
+  <option value="Brazil">Brazil</option>
+  <option value="Brunei">Brunei</option>
+  <option value="Bulgaria">Bulgaria</option>
+  <option value="Cambodia">Cambodia</option>
+  <option value="Cameroon">Cameroon</option>
+  <option value="Canada">Canada</option>
+  <option value="Chad">Chad</option>
+  <option value="Chile">Chile</option>
+  <option value="China">China</option>
+  <option value="Colombia">Colombia</option>
+  <option value="Costa Rica">Costa Rica</option>
+  <option value="Croatia">Croatia</option>
+  <option value="Cuba">Cuba</option>
+  <option value="Cyprus">Cyprus</option>
+  <option value="Czech Republic">Czech Republic</option>
+  <option value="Denmark">Denmark</option>
+  <option value="Egypt">Egypt</option>
+  <option value="Ethiopia">Ethiopia</option>
+  <option value="Finland">Finland</option>
+  <option value="France">France</option>
+  <option value="Germany">Germany</option>
+  <option value="Greece">Greece</option>
+  <option value="India">India</option>
+  <option value="Indonesia">Indonesia</option>
+  <option value="Iran">Iran</option>
+  <option value="Iraq">Iraq</option>
+  <option value="Ireland">Ireland</option>
+  <option value="Israel">Israel</option>
+  <option value="Italy">Italy</option>
+  <option value="Japan">Japan</option>
+  <option value="Kenya">Kenya</option>
+  <option value="Malaysia">Malaysia</option>
+  <option value="Mexico">Mexico</option>
+  <option value="Nepal">Nepal</option>
+  <option value="Netherlands">Netherlands</option>
+  <option value="New Zealand">New Zealand</option>
+  <option value="Nigeria">Nigeria</option>
+  <option value="Pakistan">Pakistan</option>
+  <option value="Philippines">Philippines</option>
+  <option value="Poland">Poland</option>
+  <option value="Portugal">Portugal</option>
+  <option value="Qatar">Qatar</option>
+  <option value="Russia">Russia</option>
+  <option value="Saudi Arabia">Saudi Arabia</option>
+  <option value="Singapore">Singapore</option>
+  <option value="South Africa">South Africa</option>
+  <option value="South Korea">South Korea</option>
+  <option value="Spain">Spain</option>
+  <option value="Sri Lanka">Sri Lanka</option>
+  <option value="Sweden">Sweden</option>
+  <option value="Switzerland">Switzerland</option>
+  <option value="Thailand">Thailand</option>
+  <option value="Turkey">Turkey</option>
+  <option value="Ukraine">Ukraine</option>
+  <option value="United Arab Emirates">United Arab Emirates</option>
+  <option value="United Kingdom">United Kingdom</option>
+  <option value="United States">United States</option>
+  <option value="Vietnam">Vietnam</option>
+  <option value="Zimbabwe">Zimbabwe</option>
+</select>
+
+    <label>Bio</label>
+    <textarea id="bio" rows="3" placeholder="Write something about yourself..."></textarea>
+
+    <label>Upload Photos</label>
+    <input type="file" accept="image/*" multiple onchange="previewFiles(this, 'photoPreview')">
+    <div class="preview" id="photoPreview">
+<hr style="margin-top: 40px; border-color: #00ffc3;">
+<h2 style="color: #00ffc3;">💸 Request Withdrawal</h2>
+
+<label>Amount (in USD)</label>
+<input type="number" id="withdrawAmount" min="10" placeholder="Enter amount (min $10)">
+
+<label>Payment Method (UPI or PayPal)</label>
+<input type="text" id="withdrawMethod" placeholder="Enter UPI ID or PayPal Email">
+
+<button onclick="submitWithdraw()">📤 Request Withdrawal</button>
+
+</div>
+
+    <label>Upload Videos</label>
+    <input type="file" accept="video/*" multiple onchange="previewFiles(this, 'videoPreview')">
+    <div class="preview" id="videoPreview"></div>
+
+    <div class="coin-box">
+      💰 Coins Earned: <span id="earned">0</span>
+    </div>
+
+    <button class="button-save" onclick="saveProfile()">💾 Save Profile</button>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const earnings = localStorage.getItem("coins") || "0";
+      document.getElementById("earned").textContent = earnings;
+    };
+
+    function previewFiles(input, targetId) {
+      const preview = document.getElementById(targetId);
+      preview.innerHTML = "";
+      Array.from(input.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const el = file.type.startsWith('video') ? document.createElement("video") : document.createElement("img");
+          el.src = e.target.result;
+          if (file.type.startsWith('video')) el.controls = true;
+          preview.appendChild(el);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function saveProfile() {
+      const name = document.getElementById("name").value;
+      const age = document.getElementById("age").value;
+      const country = document.getElementById("country").value;
+      const bio = document.getElementById("bio").value;
+      const profile = { name, age, country, bio };
+      localStorage.setItem("womanProfile", JSON.stringify(profile));
+      alert("✅ Profile saved locally.");
+    }
+
+  
+function submitWithdraw() {
+  const amount = parseFloat(document.getElementById("withdrawAmount").value);
+  const method = document.getElementById("withdrawMethod").value.trim();
+  const coins = parseInt(localStorage.getItem("coins") || "0");
+
+  if (!amount || amount < 10) {
+    alert("❌ Minimum $10 required.");
+    return;
+  }
+
+  if (!method) {
+    alert("❌ Payment method required.");
+    return;
+  }
+
+  if (coins < amount * 100) {
+    alert("❌ Not enough coins. You need " + (amount * 100) + " coins.");
+    return;
+  }
+
+  const requests = JSON.parse(localStorage.getItem("withdraws") || "[]");
+  requests.push({
+    amount,
+    method,
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("withdraws", JSON.stringify(requests));
+  alert("✅ Withdrawal request submitted to admin.");
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawMethod").value = "";
+}
+
+</script>
+</body>
+</html>
