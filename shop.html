@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ScrewChat – Coin Shop & VIP</title>
+  <title>ScrewChat VIP Shop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -90,48 +91,85 @@
   <h1>💰 Coin Shop & VIP</h1>
 
   <div class="vip">
-    <h2>👑 Become VIP – $20/month</h2>
+    <h2>👑 Become VIP – ₹1499</h2>
     <p>✔ Unlock sexy chat<br>✔ Get 10,000 coins/month<br>✔ Call anyone privately</p>
-    <button onclick="becomeVIP()">Buy VIP</button>
+    <!-- PayPal button for VIP -->
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+      <input type="hidden" name="cmd" value="_xclick">
+      <input type="hidden" name="business" value="youremail@example.com">
+      <input type="hidden" name="item_name" value="VIP Access for ScrewChat">
+      <input type="hidden" name="amount" value="20.00">
+      <input type="hidden" name="currency_code" value="USD">
+      <input type="hidden" name="return" value="https://yourdomain.com/success">
+      <input type="hidden" name="cancel_return" value="https://yourdomain.com/cancel">
+      <input type="submit" value="Buy VIP for ₹1499">
+    </form>
   </div>
 
   <div class="shop">
     <div class="card">
       <h3>+20 Coins</h3>
       <p>₹49 / $0.6</p>
-      <button onclick="buyCoins(20)">Buy</button>
+      <!-- PayPal button for 20 Coins -->
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="youremail@example.com">
+        <input type="hidden" name="item_name" value="20 Coins for ScrewChat">
+        <input type="hidden" name="amount" value="0.60">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="return" value="https://yourdomain.com/success">
+        <input type="hidden" name="cancel_return" value="https://yourdomain.com/cancel">
+        <input type="submit" value="Buy 20 Coins for ₹49">
+      </form>
     </div>
     <div class="card">
       <h3>+100 Coins</h3>
       <p>₹199 / $2.5</p>
-      <button onclick="buyCoins(100)">Buy</button>
+      <!-- PayPal button for 100 Coins -->
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="youremail@example.com">
+        <input type="hidden" name="item_name" value="100 Coins for ScrewChat">
+        <input type="hidden" name="amount" value="2.50">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="return" value="https://yourdomain.com/success">
+        <input type="hidden" name="cancel_return" value="https://yourdomain.com/cancel">
+        <input type="submit" value="Buy 100 Coins for ₹199">
+      </form>
     </div>
     <div class="card">
       <h3>+500 Coins</h3>
       <p>₹599 / $7.5</p>
-      <button onclick="buyCoins(500)">Buy</button>
+      <!-- PayPal button for 500 Coins -->
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="youremail@example.com">
+        <input type="hidden" name="item_name" value="500 Coins for ScrewChat">
+        <input type="hidden" name="amount" value="7.50">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="return" value="https://yourdomain.com/success">
+        <input type="hidden" name="cancel_return" value="https://yourdomain.com/cancel">
+        <input type="submit" value="Buy 500 Coins for ₹599">
+      </form>
     </div>
     <div class="card">
       <h3>+1000 Coins</h3>
       <p>₹999 / $12</p>
-      <button onclick="buyCoins(1000)">Buy</button>
+      <!-- PayPal button for 1000 Coins -->
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="youremail@example.com">
+        <input type="hidden" name="item_name" value="1000 Coins for ScrewChat">
+        <input type="hidden" name="amount" value="12.00">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="return" value="https://yourdomain.com/success">
+        <input type="hidden" name="cancel_return" value="https://yourdomain.com/cancel">
+        <input type="submit" value="Buy 1000 Coins for ₹999">
+      </form>
     </div>
   </div>
 
   <a href="chat.html">⬅️ Go back to Chat</a>
 
-  <script>
-    function becomeVIP() {
-      localStorage.setItem("vip", "true");
-      localStorage.setItem("coins", "10000");
-      alert("✅ VIP activated! You now have 10,000 coins.");
-    }
-
-    function buyCoins(amount) {
-      let current = parseInt(localStorage.getItem("coins") || "0");
-      localStorage.setItem("coins", current + amount);
-      alert("✅ You bought " + amount + " coins.");
-    }
-  </script>
 </body>
 </html>

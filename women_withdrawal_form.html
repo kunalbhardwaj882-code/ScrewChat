@@ -1,0 +1,51 @@
+
+<!-- Withdrawal Request Form (Women Only) -->
+<div style="background:#1c1c1c;padding:20px;border-radius:10px;max-width:400px;margin:auto;color:#fff;">
+  <h3>💸 Request Withdrawal</h3>
+  <form id="withdrawalForm">
+    <label>Amount (INR):</label><br>
+    <input type="number" id="amount" required placeholder="Enter amount" style="width:100%;padding:8px;margin-bottom:10px;"><br>
+
+    <label>Bank Name:</label><br>
+    <input type="text" id="bankName" required placeholder="Enter bank name" style="width:100%;padding:8px;margin-bottom:10px;"><br>
+
+    <label>Account Number:</label><br>
+    <input type="text" id="accountNumber" required placeholder="Enter account number" style="width:100%;padding:8px;margin-bottom:10px;"><br>
+
+    <label>IFSC Code:</label><br>
+    <input type="text" id="ifsc" required placeholder="Enter IFSC code" style="width:100%;padding:8px;margin-bottom:10px;"><br>
+
+    <button type="submit" style="padding:10px 20px;background:#00ffc3;border:none;border-radius:6px;cursor:pointer;">Submit Request</button>
+  </form>
+</div>
+
+<script>
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const db = firebase.firestore();
+
+  document.getElementById("withdrawalForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const amount = document.getElementById("amount").value;
+    const bankName = document.getElementById("bankName").value;
+    const accountNumber = document.getElementById("accountNumber").value;
+    const ifsc = document.getElementById("ifsc").value;
+
+    if (!user || !user.email) return alert("User not logged in");
+
+    db.collection("withdrawal_requests").add({
+      user: user.email,
+      amount: parseFloat(amount),
+      bankName,
+      accountNumber,
+      ifsc,
+      status: "pending",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      alert("✅ Withdrawal request submitted!");
+      document.getElementById("withdrawalForm").reset();
+    }).catch(err => {
+      alert("❌ Failed to submit request");
+      console.error(err);
+    });
+  });
+</script>

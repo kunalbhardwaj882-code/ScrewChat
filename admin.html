@@ -147,5 +147,100 @@ if (typeof access === "undefined" || access === "screwadmin") {
 }
 
 </script>
+
+<!-- Withdrawal Requests Section -->
+<h2 style="color:#00ffc3">💸 Withdrawal Requests</h2>
+<table style="width:100%;border-collapse:collapse;margin-top:20px;color:#fff;">
+  <thead>
+    <tr style="background:#222;">
+      <th style="padding:10px;border:1px solid #333;">User</th>
+      <th style="padding:10px;border:1px solid #333;">Amount</th>
+      <th style="padding:10px;border:1px solid #333;">Bank</th>
+      <th style="padding:10px;border:1px solid #333;">Account</th>
+      <th style="padding:10px;border:1px solid #333;">IFSC</th>
+      <th style="padding:10px;border:1px solid #333;">Status</th>
+      <th style="padding:10px;border:1px solid #333;">Action</th>
+    </tr>
+  </thead>
+  <tbody id="withdrawalBody"></tbody>
+</table>
+
+<script>
+  const db = firebase.firestore();
+
+  function loadWithdrawals() {
+    const tbody = document.getElementById("withdrawalBody");
+    tbody.innerHTML = "";
+    db.collection("withdrawal_requests").orderBy("createdAt", "desc").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        const row = document.createElement("tr");
+        row.innerHTML = \`
+          <td style="padding:8px;border:1px solid #333;">\${d.user}</td>
+          <td style="padding:8px;border:1px solid #333;">₹\${d.amount}</td>
+          <td style="padding:8px;border:1px solid #333;">\${d.bankName}</td>
+          <td style="padding:8px;border:1px solid #333;">\${d.accountNumber}</td>
+          <td style="padding:8px;border:1px solid #333;">\${d.ifsc}</td>
+          <td style="padding:8px;border:1px solid #333;">\${d.status}</td>
+          <td style="padding:8px;border:1px solid #333;">
+            <button onclick="updateStatus('\${doc.id}', 'approved')">✅ Approve</button>
+            <button onclick="updateStatus('\${doc.id}', 'rejected')">❌ Reject</button>
+          </td>
+        \`;
+        tbody.appendChild(row);
+      });
+    });
+  }
+
+  function updateStatus(id, status) {
+    db.collection("withdrawal_requests").doc(id).update({ status }).then(() => {
+      alert("Status updated to " + status);
+      loadWithdrawals();
+    });
+  }
+
+  loadWithdrawals();
+</script>
+
+
+<div class="section">
+  <h2>📊 Analytics Dashboard</h2>
+  <canvas id="analyticsChart" style="max-width:100%;background:#fff;border-radius:10px;"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  async function loadAnalytics() {
+    const totalUsers = await db.collection("users").get().then(s => s.size);
+    const totalMessages = await db.collection("messages").get().then(s => s.size);
+    const withdrawals = await db.collection("withdrawal_requests").where("status", "==", "approved").get().then(s => s.size);
+
+    const ctx = document.getElementById("analyticsChart").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Users", "Messages", "Approved Withdrawals"],
+        datasets: [{
+          label: "Total Count",
+          data: [totalUsers, totalMessages, withdrawals],
+          backgroundColor: ["#00ffc3", "#3399ff", "#ff4b5c"]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: "ScrewChat Analytics Overview"
+          }
+        }
+      }
+    });
+  }
+
+  if (typeof db !== "undefined") loadAnalytics();
+</script>
+
 </body>
 </html>

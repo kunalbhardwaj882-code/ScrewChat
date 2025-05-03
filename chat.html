@@ -730,5 +730,76 @@ firebase.auth().onAuthStateChanged(user => {
 });
 
 </script>
+
+<script>
+// 🚫 Detect screen recording (focus loss)
+let blurCount = 0;
+window.addEventListener("blur", () => {
+  blurCount++;
+  if (blurCount > 2) {
+    alert("⚠️ Screen recording or focus lost multiple times. Session closing.");
+    location.href = "welcome.html";
+  }
+});
+
+// 🧼 Message abuse filter
+const abusiveWords = ["sex", "fuck", "nude", "boobs", "dick", "horny"];
+function filterMessage(text) {
+  return !abusiveWords.some(word => text.toLowerCase().includes(word));
+}
+
+// Override sendMessage to filter abusive text
+const realSendMessage = sendMessage;
+sendMessage = function () {
+  const input = document.getElementById("messageInput");
+  const text = input.value.trim();
+  if (!filterMessage(text)) {
+    alert("❌ Abusive message blocked.");
+    return;
+  }
+  realSendMessage(text);
+};
+</script>
+
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const type = localStorage.getItem("type");
+  const controlDiv = document.querySelector(".controls-inside");
+
+  if (type === "woman") {
+    const btn1 = document.createElement("button");
+    btn1.textContent = "👩 My Profile";
+    btn1.onclick = () => window.location.href = "profile.html";
+    controlDiv.appendChild(btn1);
+
+    const btn2 = document.createElement("button");
+    btn2.textContent = "💸 Withdraw";
+    btn2.onclick = () => window.location.href = "women_withdrawal_form.html";
+    controlDiv.appendChild(btn2);
+  }
+
+  const discoverBtn = document.createElement("button");
+  discoverBtn.textContent = "🔍 Discover";
+  discoverBtn.onclick = () => window.location.href = "discover.html";
+  controlDiv.appendChild(discoverBtn);
+});
+</script>
+
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const type = localStorage.getItem("type");
+  const controlDiv = document.querySelector(".controls-inside");
+
+  if (type === "man") {
+    const btn = document.createElement("button");
+    btn.textContent = "👨 My Profile";
+    btn.onclick = () => window.location.href = "man_profile.html";
+    controlDiv.appendChild(btn);
+  }
+});
+</script>
+
 </body>
 </html>
