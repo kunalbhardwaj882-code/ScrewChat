@@ -66,6 +66,19 @@
       text-decoration: underline;
       margin: 0 6px;
     }
+    .gender {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+      font-size: 15px;
+    }
+    .gender label {
+      display: flex;
+      align-items: center;
+    }
+    .gender input {
+      margin-right: 6px;
+    }
     @keyframes fadeInUp {
       from { transform: translateY(40px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
@@ -76,6 +89,10 @@
   <div class="card">
     <h1>👋 Welcome to <span style="color:#fff;">ScrewChat</span></h1>
     <input type="number" id="ageInput" placeholder="Enter your age (18–80)" min="18" max="80">
+    <div class="gender">
+      <label><input type="radio" name="gender" value="man" checked> Male</label>
+      <label><input type="radio" name="gender" value="woman"> Female</label>
+    </div>
     <button onclick="validateAge()">Continue</button>
     <button onclick="signInWithGoogle()">Sign in with Google</button>
     <div class="links">
@@ -85,17 +102,15 @@
     </div>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDSG9gmkJsL7HhBrv2Eaa-OMsv-0bJALxs",
       authDomain: "screwchat-randomvideochat.firebaseapp.com",
       projectId: "screwchat-randomvideochat",
       appId: "1:74477360618:web:688dc1f3256efcaf160e93"
-
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -117,6 +132,10 @@
         alert("Enter valid age first.");
         return;
       }
+      const gender = document.querySelector('input[name="gender"]:checked').value;
+      const age = document.getElementById("ageInput").value;
+      localStorage.setItem("type", gender);
+      localStorage.setItem("age", age);
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => {
