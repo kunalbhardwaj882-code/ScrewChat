@@ -329,7 +329,8 @@
 <button onclick="startChat()">▶️ Start</button>
 <button onclick="skipChat()">⏭️ Skip</button>
 <button onclick="stopChat()">⏹️ Stop</button>
-<button onclick="goToShop()">🛒 Shop</button>
+<button onclick="sendFriendRequest(peerId)">➕ Add Friend</button>
+        <button onclick="acceptFriendRequest(peerId)">✅ Accept</button>        <button onclick="goToShop()">🛒 Shop</button>
 <button onclick="reportUser()">🚨 Report</button>
 </div>
 <!-- Gifts -->
@@ -502,6 +503,31 @@ function applyDailyBonus() {
   }
 }
 window.addEventListener("DOMContentLoaded", applyDailyBonus);
+
+
+// 👫 Friend Request System
+function sendFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).set({
+    from: userId,
+    to: otherUserId,
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("✅ Friend request sent.");
+  });
+}
+
+function acceptFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).update({
+    status: "accepted"
+  }).then(() => {
+    alert("🎉 You are now friends!");
+  });
+}
 
 </script>
 <script>
@@ -757,6 +783,31 @@ firebase.auth().onAuthStateChanged(user => {
   });
 });
 
+
+// 👫 Friend Request System
+function sendFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).set({
+    from: userId,
+    to: otherUserId,
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("✅ Friend request sent.");
+  });
+}
+
+function acceptFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).update({
+    status: "accepted"
+  }).then(() => {
+    alert("🎉 You are now friends!");
+  });
+}
+
 </script>
 
 <script>
@@ -787,6 +838,31 @@ sendMessage = function () {
   }
   realSendMessage(text);
 };
+
+// 👫 Friend Request System
+function sendFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).set({
+    from: userId,
+    to: otherUserId,
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("✅ Friend request sent.");
+  });
+}
+
+function acceptFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).update({
+    status: "accepted"
+  }).then(() => {
+    alert("🎉 You are now friends!");
+  });
+}
+
 </script>
 
 
@@ -812,6 +888,31 @@ window.addEventListener("DOMContentLoaded", () => {
   discoverBtn.onclick = () => window.location.href = "discover.html";
   controlDiv.appendChild(discoverBtn);
 });
+
+// 👫 Friend Request System
+function sendFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).set({
+    from: userId,
+    to: otherUserId,
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("✅ Friend request sent.");
+  });
+}
+
+function acceptFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).update({
+    status: "accepted"
+  }).then(() => {
+    alert("🎉 You are now friends!");
+  });
+}
+
 </script>
 
 
@@ -827,6 +928,31 @@ window.addEventListener("DOMContentLoaded", () => {
     controlDiv.appendChild(btn);
   }
 });
+
+// 👫 Friend Request System
+function sendFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).set({
+    from: userId,
+    to: otherUserId,
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("✅ Friend request sent.");
+  });
+}
+
+function acceptFriendRequest(otherUserId) {
+  const userId = localStorage.getItem("uid");
+  const friendId = [userId, otherUserId].sort().join("_");
+  firebase.firestore().collection("friends").doc(friendId).update({
+    status: "accepted"
+  }).then(() => {
+    alert("🎉 You are now friends!");
+  });
+}
+
 </script>
 
 </body>

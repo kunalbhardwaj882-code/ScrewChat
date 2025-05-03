@@ -280,5 +280,32 @@ function submitWithdraw() {
 }
 
 </script>
+<h3>👫 Friends</h3><ul id="friendsList"></ul>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+<script>
+const db = firebase.firestore();
+const uid = localStorage.getItem("uid");
+
+function loadFriends() {
+  const container = document.getElementById("friendsList");
+  container.innerHTML = "Loading...";
+
+  db.collection("friends").where("status", "==", "accepted").get().then(snapshot => {
+    const friends = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.from === uid || data.to === uid) {
+        const friendId = data.from === uid ? data.to : data.from;
+        friends.push(friendId);
+      }
+    });
+    container.innerHTML = friends.length
+      ? friends.map(f => `<li>👥 ${f}</li>`).join("")
+      : "No friends yet.";
+  });
+}
+window.addEventListener("DOMContentLoaded", loadFriends);
+</script>
+
 </body>
 </html>
