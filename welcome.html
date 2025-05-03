@@ -1,8 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Welcome to ScrewChat</title>
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="ScrewChat – Random Video Chat">
+  <meta name="description" content="Connect with real people instantly. VIP access, private video, and global chat.">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://screwchatrandomvideochat.netlify.app/">
+  <meta property="og:title" content="ScrewChat – Random Video Chat">
+  <meta property="og:description" content="Connect with real people instantly. VIP access, private video, and global chat.">
+  <meta property="og:image" content="https://screwchatrandomvideochat.netlify.app/cover.jpg">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ScrewChat – Random Video Chat">
+  <meta name="twitter:description" content="Connect with real people instantly. VIP access, private video, and global chat.">
+  <meta name="twitter:image" content="https://screwchatrandomvideochat.netlify.app/cover.jpg">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
@@ -140,6 +158,13 @@
       auth.signInWithPopup(provider)
         .then(result => {
           alert("✅ Welcome " + result.user.displayName);
+          
+      if (!localStorage.getItem("hasRegisteredBefore")) {
+        localStorage.setItem("coins", "200");
+        localStorage.setItem("hasRegisteredBefore", "true");
+        alert("🎉 You've received 200 free coins on signup!");
+      }
+
           window.location.href = "chat.html";
         })
         .catch(error => {

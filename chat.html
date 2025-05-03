@@ -4,6 +4,21 @@
 <head>
 <meta charset="utf-8"/>
 <title>ScrewChat – Live Chat</title>
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="ScrewChat – Random Video Chat">
+  <meta name="description" content="Connect with real people instantly. VIP access, private video, and global chat.">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://screwchatrandomvideochat.netlify.app/">
+  <meta property="og:title" content="ScrewChat – Random Video Chat">
+  <meta property="og:description" content="Connect with real people instantly. VIP access, private video, and global chat.">
+  <meta property="og:image" content="https://screwchatrandomvideochat.netlify.app/cover.jpg">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ScrewChat – Random Video Chat">
+  <meta name="twitter:description" content="Connect with real people instantly. VIP access, private video, and global chat.">
+  <meta name="twitter:image" content="https://screwchatrandomvideochat.netlify.app/cover.jpg">
+
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <style>
     body {
@@ -474,6 +489,19 @@ firebase.auth().onAuthStateChanged(user => {
     }
   });
 });
+
+
+// 🪙 Daily bonus coins
+function applyDailyBonus() {
+  const lastClaim = localStorage.getItem("lastDailyBonusDate");
+  const today = new Date().toISOString().split('T')[0];
+  if (lastClaim !== today) {
+    updateCoins(30);
+    localStorage.setItem("lastDailyBonusDate", today);
+    alert("🎉 You got 30 free coins for today!");
+  }
+}
+window.addEventListener("DOMContentLoaded", applyDailyBonus);
 
 </script>
 <script>

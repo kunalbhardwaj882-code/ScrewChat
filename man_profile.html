@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile – ScrewChat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      color: white;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ffc3;
+      text-align: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 30px auto;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    .info {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 4px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #00ffc3;
+      border: none;
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>👨 My Profile</h1>
+  <div class="card">
+    <div class="info">
+      <label>Name:</label>
+      <input type="text" id="nameInput" placeholder="Your name">
+      <label>Email:</label>
+      <input type="text" id="emailInput" disabled>
+    </div>
+
+    <div class="info">
+      <strong>💰 Coins:</strong> <span id="coinCount">0</span><br/>
+      <strong>🤝 Friends:</strong>
+      <ul id="friendList">
+        <li>No friends yet.</li>
+      </ul>
+    </div>
+
+    <button onclick="saveProfile()">💾 Save Changes</button>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDSG9gmkJsL7HhBrv2Eaa-OMsv-0bJALxs",
+      authDomain: "screwchat-randomvideochat.firebaseapp.com",
+      projectId: "screwchat-randomvideochat",
+      appId: "1:74477360618:web:688dc1f3256efcaf160e93"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(user => {
+      if (!user) return window.location.href = "welcome.html";
+      document.getElementById("emailInput").value = user.email;
+      document.getElementById("nameInput").value = user.displayName || "";
+      const coins = localStorage.getItem("coins") || "200";
+      document.getElementById("coinCount").textContent = coins;
+    });
+
+    function saveProfile() {
+      const name = document.getElementById("nameInput").value;
+      auth.currentUser.updateProfile({ displayName: name })
+        .then(() => alert("✅ Profile updated."))
+        .catch(err => alert("❌ Error: " + err.message));
+    }
+  </script>
+</body>
+</html>
